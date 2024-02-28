@@ -1,7 +1,6 @@
 const mainData = () => {
   const renderCategoriesList = (genres) => {
     const categoriesBlock = document.querySelector(".header__menu .dropdown");
-    categoriesBlock.innerHTML = "";
 
     genres.forEach((genre) => {
       categoriesBlock.insertAdjacentHTML(
@@ -15,7 +14,6 @@ const mainData = () => {
 
   const renderAnimeList = (array, genres) => {
     const wrapper = document.querySelector(".product .col-lg-8");
-    wrapper.innerHTML = "";
 
     genres.forEach((genre) => {
       const productBlock = document.createElement("div");
@@ -27,7 +25,7 @@ const mainData = () => {
       const list = array.filter((item) => item.ganre === genre);
 
       productBlock.insertAdjacentHTML(
-        "afterbegin",
+        "beforeend",
         `
         <div class="row">
           <div class="col-lg-8 col-md-8 col-sm-8">
@@ -47,7 +45,7 @@ const mainData = () => {
         const tagsBlock = document.createElement("ul");
         item.tags.forEach((tag) => {
           tagsBlock.insertAdjacentHTML(
-            "afterbegin",
+            "beforeend",
             `
             <li>${tag}</li>
           `
@@ -55,7 +53,7 @@ const mainData = () => {
         });
 
         listBlock.insertAdjacentHTML(
-          "afterbegin",
+          "beforeend",
           `
           <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="product__item">
@@ -84,7 +82,6 @@ const mainData = () => {
 
   const renderTopAnime = (array) => {
     const wrapper = document.querySelector(".filter__gallery");
-    wrapper.innerHTML = "";
     array.forEach((item) => {
       wrapper.insertAdjacentHTML(
         "beforeend",
@@ -104,19 +101,16 @@ const mainData = () => {
   };
 
   fetch("https://glo-academy-9510f-default-rtdb.firebaseio.com/anime.json")
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      const dataSort = data.sort((a, b) => b.views - a.views).slice(0, 5);
+      const dataSortTopAnime = data.sort((a, b) => b.views - a.views).slice(0, 5);
       const genres = new Set();
-
-      renderTopAnime(dataSort);
 
       data.forEach((elem) => {
         genres.add(elem.ganre);
       });
-
+      
+      renderTopAnime(dataSortTopAnime);
       renderAnimeList(data, genres);
       renderCategoriesList(genres);
     });

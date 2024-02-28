@@ -22,7 +22,7 @@ const categoriesData = () => {
       productBlock.classList.add("mb-5");
       listBlock.classList.add("row");
 
-      const list = array.filter((item) => item.ganre === genre);
+      const list = array.filter((item) => item.tags.includes(genre));
 
       productBlock.insertAdjacentHTML(
         "beforeend",
@@ -35,7 +35,7 @@ const categoriesData = () => {
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4">
                     <div class="btn__all">
-                        <a href="/categories.html?genre=${genre}" class="primary-btn">View All <span class="arrow_right"></span></a>
+                        <a href="?genre=${genre}" class="primary-btn">View All <span class="arrow_right"></span></a>
                     </div>
                 </div>
             </div>
@@ -108,13 +108,20 @@ const categoriesData = () => {
         .sort((a, b) => b.views - a.views)
         .slice(0, 5);
       const genres = new Set();
+      const paramGenre = new URLSearchParams(window.location.search).get(
+        "genre"
+      );
 
       data.forEach((elem) => {
         genres.add(elem.ganre);
       });
 
       renderTopAnime(dataSortTopAnime);
-      renderAnimeList(data, genres);
+      if (paramGenre) {
+        renderAnimeList(data, [paramGenre]);
+      } else {
+        renderAnimeList(data, genres);
+      }
       renderCategoriesList(genres);
     });
 };

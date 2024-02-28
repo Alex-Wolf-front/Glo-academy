@@ -12,9 +12,25 @@ const modal = () => {
     modal.classList.remove("active");
   });
 
+  function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
+  }
+
+  function logSearchValue(e) {
+    console.log(e.target.value);
+  }
+
+  const processChange = debounce((e) => logSearchValue(e), 1000);
+
   const searchInput = modal.querySelector("#search-input");
-  searchInput.addEventListener("keyup", () => {
-    console.log(searchInput.value);
+  searchInput.addEventListener("input", (e) => {
+    processChange(e);
   });
 };
 

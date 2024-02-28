@@ -1,10 +1,10 @@
 const mainData = () => {
-  fetch("./db.json")
+  fetch("https://glo-academy-9510f-default-rtdb.firebaseio.com/anime.json")
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      console.log(data.anime);
+      console.log(data);
     });
 };
 
